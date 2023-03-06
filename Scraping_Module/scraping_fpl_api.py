@@ -21,9 +21,13 @@ class FplScraper:
         self.base_url = "https://fantasy.premierleague.com/api/"
         self.display_pandas_warnings = display_pandas_warnings
 
-    def load_latest_gameweek(self):
+    def load_gameweek(self, GW=None):
         """
         Scrapes data from the latest FPL gameweek.
+        By default, this method will return data from the latest gameweek.
+
+        Args:
+            GW (int): The gameweek number to scrape data from. Defaults to None, which will scrape latest gameweek.
 
         Returns:
             pandas dataframe: A dataframe containing data from the latest FPL gameweek.
@@ -36,16 +40,16 @@ class FplScraper:
         r = requests.get(self.base_url + 'bootstrap-static/')
         json = r.json()
         #deadline dates
-        df_dates = pd.json_normalize(json['events'])
-        df_dates = df_dates[['id', 'deadline_time']]
-        df_dates['deadline_time'] = pd.to_datetime(df_dates['deadline_time'], utc=True)
-        df_dates.columns = ['gameweek_number', 'deadline_time']
-        today = datetime.now().date().strftime('%Y-%m-%d %H:%M:%S')
-        past_dates = df_dates[df_dates.deadline_time < today]
-        past_dates.sort_values('gameweek_number', ascending = False, inplace = True)
-        GW = past_dates.iloc[0].gameweek_number
-
-
+        if GW == None:
+            df_dates = pd.json_normalize(json['events'])
+            df_dates = df_dates[['id', 'deadline_time']]
+            df_dates['deadline_time'] = pd.to_datetime(df_dates['deadline_time'], utc=True)
+            df_dates.columns = ['gameweek_number', 'deadline_time']
+            today = datetime.now().date().strftime('%Y-%m-%d %H:%M:%S')
+            past_dates = df_dates[df_dates.deadline_time < today]
+            past_dates.sort_values('gameweek_number', ascending = False, inplace = True)
+            GW = past_dates.iloc[0].gameweek_number
+        
         #player web names, price ect.
         elements_df = pd.DataFrame(json['elements'])
         elements_types_df = pd.DataFrame(json['element_types'])
@@ -87,9 +91,26 @@ class FplScraper:
         df['gameweek'] = GW
         return df
     
-test = FplScraper()
-loading_test = test.load_latest_gameweek()
-print(loading_test.head())
+    def past_gameweeks_numbers(self, player_id = 3):
+        """
+        Fetches past gameweek numbers for a given FPL player ID.
 
+        Returns a numpy array with gameweek numbers for all past fixtures.
 
-
+        Returns:
+        --------
+        numpy array with gameweek numbers for all past fixtures
+        """
+        r = requests.get(self.base_url + 'element-summary/' + str(player_id) + '/').json()
+        df_fut = pd.json_normalize(r['fixtures'])
+        df_fut['kickoff_time'] = pd.to_datetime(df_fut['kickoff_time'], utc=True) 
+        fut = df_fut.kickoff_time
+        df_past = pd.json_normalize(r['history'])   
+        df_past['kickoff_time'] = pd.to_datetime(df_past['kickoff_time'], utc=True)
+        past = df_past.kickoff_time
+        kickoffs = past.append(fut).reset_index()['kickoff_time']
+        kickoffs_df = pd.DataFrame({'kickoff_time': kickoffs, 'gameweek_number':kickoffs.index+1})
+        today = datetime.now().date().strftime('%Y-%m-%d %H:%M:%S')
+        past_dates = kickoffs_df[kickoffs_df.kickoff_time < today]
+        past_dates.sort_values('gameweek_number', ascending = False, inplace = True)
+        return past_dates.gameweek_number
