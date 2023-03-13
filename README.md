@@ -5,8 +5,8 @@ This repository contains the FPL Gameweek Summary dashboard in a PBIX file forma
 To get started with the FPL Gameweek Summary Dashboard, follow these steps:<br>
 
 1. Clone this repository to your local machine.<br>
-2. Install the required Python libraries by running pip install -r requirements.txt.<br>
-3. Open the FPL Gameweek Summary.pbix file to view the dashboard.<br>
+2. Open the FPL Gameweek Summary.pbix file to view the dashboard.<br>
+3. If you wish to update data on your local machine, install the required Python libraries by running <b>pip install -r requirements.txt.</b><br>
 
 ## Features<br>
 ### FPL Gameweek Summary PBIX File<br>
