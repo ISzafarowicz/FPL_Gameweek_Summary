@@ -14,7 +14,7 @@ The FPL Gameweek Summary dashboard is a Power BI report that provides an overvie
 The dashboard includes visualizations of key performance metrics, such as the total points scored by each player, their Expected Points as well as difference between Expected Points and actual points (Overachievers and Underachievers). <br>
 
 ### Update Dashboard BAT File <br>
-<i>If you wish to update data locally, please make sure to edit update_dashboard.bat and specify path to your python.exe file (mine is "D:\Fpl_toolbox\update_dashboard.py").
+<i>If you wish to update data locally, please make sure to edit update_dashboard.bat and specify path to your python.exe file (mine is "D:\Python\python.exe"). <br>
 Alternatively, you can open update_dashboard.py script and run it inside your IDE. </i> <br>
 The 'update_dashboard.bat' file is a batch file that automatically updates the dashboard data. When run, it scrapes the latest data from the FPL API using the FplScraper class defined in the 'scraping_fpl_api.py' file and saves it to the 'Dashboard_Data' folder. Refreshing data manually is not possible as the dashboard downloads data from the Github repository, not your local machine. <br>
 
