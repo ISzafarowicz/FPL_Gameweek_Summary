@@ -26,7 +26,7 @@ The 'Dashboard_Data' folder contains a CSV file for the latest gameweek's FPL da
 The 'Scraping_Module' folder contains the 'scraping_fpl_api.py' file, which defines the FplScraper class used to scrape and clean data from the FPL API.<br>
 
 ## Usage<br>
-To use the FPL Gameweek Summary dashboard, simply open the 'FPL Gameweek Summary.pbix' file using Power BI Desktop. To update the data in the dashboard locally, run the 'update_dashboard.bat' file (it will not update the dashboard itself). Note that you must have Python 3 installed to run the scraping script.<br>
+To use the FPL Gameweek Summary dashboard, simply open the 'FPL Gameweek Summary.pbix' file using Power BI Desktop. To update the data locally, run the 'update_dashboard.bat' file (it will not update the dashboard itself - only your local CSV file inside Dashboard_Data). Note that you must have Python 3 installed to run the scraping script.<br>
 
 ## Disclaimer<br>
 This dashboard and associated files are not affiliated with or endorsed by the Fantasy Premier League or its parent company. The data used in this dashboard is publicly available and has been scraped from the FPL API using the FplScraper class defined in the 'scraping_fpl_api.py' file.
